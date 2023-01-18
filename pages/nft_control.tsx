@@ -1,5 +1,5 @@
 import { create } from "ipfs-http-client";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, Provider, useEffect, useState } from "react";
 import styles from "../styles/Home.module.css";
 import abi from "../lib/abi/IpNft.json";
 import {
@@ -8,6 +8,9 @@ import {
   usePrepareContractWrite,
   useContractRead,
 } from "wagmi";
+
+import { useIpState } from "./store";
+import { ethers } from "ethers";
 
 const projectId =
   process.env.INFURA_PROJECT_ID || "2EMSA0X2QRbrMUc7A9AMg1ipxb0"; // <---------- your Infura Project ID
@@ -29,41 +32,54 @@ const client = create({
 });
 
 export default function NftControl() {
-  const [currentTokenId, setCurrentTokenId] = useState("");
+  /* testing purpose */
+  const ipfsUrl = useIpState((state) => state.ipfsUrl);
+  const setIpfsUrl = useIpState((state) => state.setIpfsUrl);
+  /* to be removed */
 
+  const topic = useIpState((state) => state.topic);
+  const currentTokenId = useIpState((state) => state.currentTokenId);
+  const setTokenId = useIpState((state) => state.setCurrentTokenId);
   const contractABI = abi.abi;
   const contractAddress = abi.address;
   const { address } = useAccount();
 
-  const { data } = useContractRead({
-    address: contractAddress,
-    contractInterface: contractABI,
-    functionName: "currentTokenCount",
-  });
+  const provider = new ethers.providers.InfuraProvider(
+    "goerli",
+    process.env.INFURA_KEY
+  );
+
+  const IpNft = new ethers.Contract(contractAddress, contractABI, provider);
+
+  async function getTokenId() {
+    const data = await IpNft.currentTokenCount();
+    console.log("tokenid: ", data);
+    setTokenId(data);
+  }
+
+  useEffect(() => {
+    getTokenId();
+  }, []);
 
   const { config: newIpfsConfig } = usePrepareContractWrite({
     address: contractAddress,
     contractInterface: contractABI,
     functionName: "createIpNft",
-    args: [address, currentTokenId, contractCid],
+    args: [],
   });
   const {
     data: writeData,
     isLoading,
     isSuccess,
-    write: newAdSpace,
+    write: newIpNft,
   } = useContractWrite(newIpfsConfig);
-
-  useEffect(() => {
-    useContractRead;
-    setCurrentTokenId(data);
-    console.log(data);
-  }, []);
 
   return (
     <div>
       <div className="container">
-        <h2>Step 2 add or remove brightlisted addresses</h2>
+        <h2>Step 2: Create your IP-NFT</h2>
+        <p>{ipfsUrl}</p>
+        <p>{currentTokenId.toString()}</p>
       </div>
     </div>
   );

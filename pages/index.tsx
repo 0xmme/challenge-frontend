@@ -4,6 +4,7 @@ import Link from "next/link";
 import styles from "../styles/Home.module.css";
 import ContractDataForm from "./contract-data-form";
 import Header from "./header";
+import NftControl from "./nft_control";
 
 export default function IndexPage() {
   return (
@@ -21,6 +22,7 @@ export default function IndexPage() {
             Coding challenge for <a href="https://molecule.to">Molecule!</a>
           </h1>
           <ContractDataForm />
+          <NftControl />
         </main>
 
         <footer className={styles.footer}></footer>

@@ -5,6 +5,7 @@ import { fromJSON } from "postcss";
 import { FormEvent, useState } from "react";
 import styles from "../styles/Home.module.css";
 import Header from "./header";
+import { useIpState } from "./store";
 
 import Lit from "../lib/lit/lit";
 
@@ -32,7 +33,16 @@ export default function ContractDataForm() {
   const [encryptedUrlArr, setEncryptedUrlArr] = useState([]);
   const [encryptedKeyArr, setEncryptedKeyArr] = useState([]);
   const [decryptedFileArr, setDecryptedFileArr] = useState([]);
-  const [ipfsUrl, setIpfsUrl] = useState("");
+  //const [ipfsUrl, setIpfsUrl] = useState("");
+  //const [contractCid, setContractCid] = useState("");
+  //const [topic, setTopic] = useState("");
+
+  const ipfsUrl = useIpState((state) => state.ipfsUrl);
+  const setIpfsUrl = useIpState((state) => state.setIpfsUrl);
+  const contractCid = useIpState((state) => state.contractCid);
+  const setContractCid = useIpState((state) => state.setContractCid);
+  const topic = useIpState((state) => state.topic);
+  const setTopic = useIpState((state) => state.setTopic);
 
   function retrieveFile(e) {
     const data = e.target.files[0];
@@ -97,8 +107,10 @@ export default function ContractDataForm() {
       const created = await client.add(encrypted.encryptedFile);
       const url = `https://infura-ipfs.io/ipfs/${created.path}`;
       setIpfsUrl(url);
+      setContractCid(created);
 
-      console.log("IPFS URL: ", url);
+      localStorage.setItem("contractCid", contractCid);
+
       //console.log("Encrypted String: ", encrypted.encryptedFile);
 
       setEncryptedUrlArr((prev) => [...prev, encrypted.encryptedFile]);
@@ -116,7 +128,7 @@ export default function ContractDataForm() {
   return (
     <div>
       <div className="container">
-        <h2>Step 1 legal contract data</h2>
+        <h2>Step 1: Add your legal contract data</h2>
 
         <p className={styles.description}>
           Please provide Patent ID in the form
@@ -147,6 +159,20 @@ export default function ContractDataForm() {
             type="text"
             id="university"
             name="university"
+            className="mt-1
+          block
+          w-full
+          rounded-md
+          border-gray-300
+          shadow-sm
+          focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+            required
+          />
+          <label htmlFor="topic">Reseach Topic / Disease</label>
+          <input
+            type="text"
+            id="topic"
+            name="topic"
             className="mt-1
           block
           w-full
@@ -196,7 +222,14 @@ export default function ContractDataForm() {
             Submit
           </button>
         </form>
-        {ipfsUrl ? <div>{ipfsUrl}</div> : <div></div>}
+        {ipfsUrl ? (
+          <div>
+            <p>Here you'll find your encrypted file:</p>
+            {ipfsUrl}
+          </div>
+        ) : (
+          <div></div>
+        )}
       </div>
     </div>
   );
