@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { fromJSON } from "postcss";
-import { FormEvent } from "react";
+import { FormEvent, useState } from "react";
 import styles from "../styles/Home.module.css";
+import Header from "./header";
 
 export default function ContractDataForm() {
   // Handle the submit event on form submit.
@@ -12,12 +13,20 @@ export default function ContractDataForm() {
     // Cast the event target to an html form
     const form = event.target as HTMLFormElement;
 
+    //Check if the Patent ID is correct.
+    if (form.patent_id.value.match("[A-F]-[1-9]{5,7}/[A-Z]{5,9}") == null) {
+      alert(
+        "Please provide Patent ID in the format [A-F]-[1-9]{5,7}/[A-Z]{5,9}"
+      );
+      return;
+    }
+
     // Get data from the form.
     const data = {
-      researcher: form.first.value as string, //the name of the lead reasearcher
+      researcher: form.researcher.value as string, //the name of the lead reasearcher
       university: form.university.value as string, //the name of their university
       patent_filed: {
-        patent_id: form.patend_id.value as string, //must follow the pattern "[A-F]-[1-9]{5,7}\/[A-Z]{5,9}", e.g. A-12345/HAYFEVER
+        patent_id: form.patent_id.value as string, //must follow the pattern "[A-F]-[1-9]{5,7}\/[A-Z]{5,9}", e.g. A-12345/HAYFEVER
         institution: form.institution.value as string, //the name of the filing institution
       },
     };
@@ -79,7 +88,9 @@ export default function ContractDataForm() {
           focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
           required
         />
-        <label htmlFor="patent_id">Patent ID</label>
+        <label htmlFor="patent_id" className="control-label">
+          Patent ID
+        </label>
         <input
           type="text"
           id="patent_id"
@@ -90,8 +101,11 @@ export default function ContractDataForm() {
           rounded-md
           border-gray-300
           shadow-sm
-          focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+          focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50
+          form-control"
           required
+          //onChange={handlePatentChange}
+          //value={patentId}
         />
         <label htmlFor="institution">Institution</label>
         <input
