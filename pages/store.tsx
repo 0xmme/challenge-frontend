@@ -10,6 +10,10 @@ interface IpState {
   setTopic: (newTopic: any) => void;
   currentTokenId: string;
   setCurrentTokenId: (newTokenId: any) => void;
+  provider: any;
+  setProvider: (newProvider: any) => void;
+  signer: any;
+  setSigner: (newSigner: any) => void;
 }
 
 export const useIpState = create<IpState>()((set) => ({
@@ -22,4 +26,8 @@ export const useIpState = create<IpState>()((set) => ({
   currentTokenId: "",
   setCurrentTokenId: (newTokenId) =>
     set((state) => ({ currentTokenId: newTokenId })),
+  provider: {},
+  setProvider: (newProvider) => set((state) => ({ provider: newProvider })),
+  signer: {},
+  setSigner: (newSigner) => set((state) => ({ signer: newSigner })),
 }));

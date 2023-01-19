@@ -10,7 +10,7 @@ import { publicProvider } from "wagmi/providers/public";
 
 const { chains, provider } = configureChains(
   [goerli, mainnet],
-  [infuraProvider({ apiKey: process.env.INFURA_KEY })]
+  [infuraProvider({ apiKey: "d5e520afcb2848f09ca281103f9e635d" })]
 );
 
 const { connectors } = getDefaultWallets({

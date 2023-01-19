@@ -9,11 +9,9 @@ import { useIpState } from "./store";
 
 import Lit from "../lib/lit/lit";
 
-const projectId =
-  process.env.INFURA_PROJECT_ID || "2EMSA0X2QRbrMUc7A9AMg1ipxb0"; // <---------- your Infura Project ID
+const projectId = "2EMSA0X2QRbrMUc7A9AMg1ipxb0"; // <---------- your Infura Project ID
 
-const projectSecret =
-  process.env.INFURA_PROJECT_SECRET || "87107f0b2e6dc6f4933ae65fea617b0a"; // <---------- your Infura Secret
+const projectSecret = "87107f0b2e6dc6f4933ae65fea617b0a"; // <---------- your Infura Secret
 // (for security concerns, consider saving these values in .env files)
 
 const auth =
@@ -29,13 +27,10 @@ const client = create({
 });
 
 export default function ContractDataForm() {
-  //const [file, setFile] = useState(null);
+  const [file, setFile] = useState(null);
   const [encryptedUrlArr, setEncryptedUrlArr] = useState([]);
   const [encryptedKeyArr, setEncryptedKeyArr] = useState([]);
   const [decryptedFileArr, setDecryptedFileArr] = useState([]);
-  //const [ipfsUrl, setIpfsUrl] = useState("");
-  //const [contractCid, setContractCid] = useState("");
-  //const [topic, setTopic] = useState("");
 
   const ipfsUrl = useIpState((state) => state.ipfsUrl);
   const setIpfsUrl = useIpState((state) => state.setIpfsUrl);
@@ -84,7 +79,7 @@ export default function ContractDataForm() {
     //Check if the Patent ID is correct.
     if (form.patent_id.value.match("[A-F]-[1-9]{5,7}/[A-Z]{5,9}") == null) {
       alert(
-        "Please provide Patent ID in the format [A-F]-[1-9]{5,7}/[A-Z]{5,9}"
+        "Please provide Patent ID in the format of this example: A-12345/HAYFEVER"
       );
       return;
     }
@@ -101,21 +96,22 @@ export default function ContractDataForm() {
 
     const file = JSON.stringify(data);
 
+    setTopic(form.topic.value);
+
     try {
       const encrypted = await Lit.encryptString(file);
 
       const created = await client.add(encrypted.encryptedFile);
       const url = `https://infura-ipfs.io/ipfs/${created.path}`;
       setIpfsUrl(url);
-      setContractCid(created);
-
-      localStorage.setItem("contractCid", contractCid);
+      setContractCid(created.cid);
 
       //console.log("Encrypted String: ", encrypted.encryptedFile);
 
       setEncryptedUrlArr((prev) => [...prev, encrypted.encryptedFile]);
       setEncryptedKeyArr((prev) => [...prev, encrypted.encryptedSymmetricKey]);
 
+      localStorage.setItem("contractCid", contractCid);
       localStorage.setItem(
         "encryptedSymmetricKey",
         encrypted.encryptedSymmetricKey
@@ -131,11 +127,7 @@ export default function ContractDataForm() {
         <h2>Step 1: Add your legal contract data</h2>
 
         <p className={styles.description}>
-          Please provide Patent ID in the form
-          <code className={styles.code}>
-            [A-F]-[1-9]{(5, 7)}\/[A-Z]{(5, 9)}
-          </code>{" "}
-          e.g.
+          Please provide Patent ID in a form like this:
           <code className={styles.code}>A-12345/HAYFEVER</code>
         </p>
 
