@@ -1,27 +1,39 @@
-# Building Web Forms with Next.js Example
+# coding challenge - frontend
 
-This example shows how you can build forms with Next.js.
+This Frontend was created as my solution to the coding challenge provided by Molecule.
+Thanks to them for putting this challenge together!
 
-## Deploy your own
+## What's inside?
 
-Deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=next-example) or preview live with [StackBlitz](https://stackblitz.com/github/vercel/next.js/tree/canary/examples/next-forms)
+This frontend consists of the following tools:
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/vercel/next.js/tree/canary/examples/next-forms&project-name=next-forms&repository-name=next-forms)
+- [NextJS](https://nextjs.org/)
+- [Tailwindcss](https://tailwindcss.com/)
+- [React](https://reactjs.org/)
+- [Ethers](https://docs.ethers.org/v5/)
+- [Rainbowkit](https://www.rainbowkit.com/)
+- [wagmi](https://wagmi.sh/)
+- [Lit Protocol](https://litprotocol.com/)
+- [zustand](https://zustand-demo.pmnd.rs/)
 
 ## How to use
 
-Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init), [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/), or [pnpm](https://pnpm.io) to bootstrap the example:
+Install packages:
 
 ```bash
-npx create-next-app --example next-forms next-forms-app
+yarn
 ```
+
+Build production:
 
 ```bash
-yarn create next-app --example next-forms next-forms-app
+yarn build
 ```
+
+Development live server:
 
 ```bash
-pnpm create next-app --example next-forms next-forms-app
+yarn dev
 ```
 
-Deploy it to the cloud with [Vercel](https://vercel.com/new?utm_source=github&utm_medium=readme&utm_campaign=next-example) ([Documentation](https://nextjs.org/docs/deployment)).
+A live version of this frontend will be deployed soon.
