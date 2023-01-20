@@ -16,7 +16,7 @@ h2 {
 }
 
 a {
-  color: inherit;
+  color: #372ee6;
   text-decoration: none;
 }
 
@@ -50,7 +50,7 @@ input {
 
 input:focus {
   outline: none;
-  border-color: #0070f3;
+  border-color: #372ee6;
 }
 
 button {
@@ -61,13 +61,13 @@ button {
   border-radius: 0.25rem;
   box-sizing: border-box;
   margin-bottom: 2.5rem;
-  background-color: #0070f3;
+  background-color: #372ee6;
   color: #ddd;
   cursor: pointer;
 }
 
 button:hover {
-  background-color: #0060e9;
+  background-color: #3730a3;
 }
 
 .container {

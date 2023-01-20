@@ -27,46 +27,34 @@ const client = create({
 });
 
 export default function ContractDataForm() {
-  const [file, setFile] = useState(null);
-  const [encryptedUrlArr, setEncryptedUrlArr] = useState([]);
-  const [encryptedKeyArr, setEncryptedKeyArr] = useState([]);
-  const [decryptedFileArr, setDecryptedFileArr] = useState([]);
+  //const [encryptedUrlArr, setEncryptedUrlArr] = useState([]);
+  //const [encryptedKeyArr, setEncryptedKeyArr] = useState([]);
+  //const [decryptedFileArr, setDecryptedFileArr] = useState([]);
 
   const ipfsUrl = useIpState((state) => state.ipfsUrl);
   const setIpfsUrl = useIpState((state) => state.setIpfsUrl);
   const contractCid = useIpState((state) => state.contractCid);
   const setContractCid = useIpState((state) => state.setContractCid);
+  const encryptionKey = useIpState((state) => state.encryptionKey);
+  const setEncryptionKey = useIpState((state) => state.setEncryptionKey);
   const topic = useIpState((state) => state.topic);
   const setTopic = useIpState((state) => state.setTopic);
 
-  function retrieveFile(e) {
-    const data = e.target.files[0];
-    const reader = new window.FileReader();
-    reader.readAsArrayBuffer(data);
-
-    reader.onloadend = () => {
-      setFile(Buffer(reader.result));
-      console.log(Buffer(reader.result));
-    };
-
-    e.preventDefault();
-  }
-
-  function decrypt() {
-    if (encryptedUrlArr.length !== 0) {
-      Promise.all(
-        encryptedUrlArr.map((url, idx) => {
-          return Lit.decryptString(url, encryptedKeyArr[idx]);
-        })
-      ).then((values) => {
-        setDecryptedFileArr(
-          values.map((v) => {
-            return v.decryptedFile;
-          })
-        );
-      });
-    }
-  }
+  //function decrypt() {
+  //  if (encryptedUrlArr.length !== 0) {
+  //    Promise.all(
+  //      encryptedUrlArr.map((url, idx) => {
+  //        return Lit.decryptString(url, encryptedKeyArr[idx]);
+  //      })
+  //    ).then((values) => {
+  //      setDecryptedFileArr(
+  //        values.map((v) => {
+  //          return v.decryptedFile;
+  //        })
+  //      );
+  //    });
+  //  }
+  //}
 
   // Handle the submit event on form submit.
   const handleSubmit = async (event: FormEvent) => {
@@ -104,12 +92,13 @@ export default function ContractDataForm() {
       const created = await client.add(encrypted.encryptedFile);
       const url = `https://infura-ipfs.io/ipfs/${created.path}`;
       setIpfsUrl(url);
-      setContractCid(created.cid);
+      setContractCid(created.path);
+      setEncryptionKey(encrypted.encryptedSymmetricKey);
 
-      //console.log("Encrypted String: ", encrypted.encryptedFile);
+      console.log("Encrypted File: ", encrypted.encryptedFile);
 
-      setEncryptedUrlArr((prev) => [...prev, encrypted.encryptedFile]);
-      setEncryptedKeyArr((prev) => [...prev, encrypted.encryptedSymmetricKey]);
+      //setEncryptedUrlArr((prev) => [...prev, encrypted.encryptedFile]);
+      //setEncryptedKeyArr((prev) => [...prev, encrypted.encryptedSymmetricKey]);
 
       localStorage.setItem("contractCid", contractCid);
       localStorage.setItem(
@@ -121,6 +110,7 @@ export default function ContractDataForm() {
     }
   };
 
+  //render
   return (
     <div>
       <div className="container">
@@ -218,6 +208,10 @@ export default function ContractDataForm() {
           <div>
             <p>Here you'll find your encrypted file:</p>
             {ipfsUrl}
+            <p>The CID of your contract file is:</p>
+            <b>{contractCid}</b>
+            <span> (keep this for Step 3)</span>
+            <p>Your encryption key is saved in your browser.</p>
           </div>
         ) : (
           <div></div>
