@@ -17,6 +17,8 @@ This frontend consists of the following tools:
 - [zustand](https://zustand-demo.pmnd.rs/)
 - [orbitDB](https://github.com/orbitdb)
 
+A live version of this frontend can be found [here](https://twilight-waterfall-3819.on.fleek.co/).
+
 ## How to use
 
 Install packages:
@@ -36,5 +38,3 @@ Development live server:
 ```bash
 yarn dev
 ```
-
-A live version of this frontend will be deployed soon.
