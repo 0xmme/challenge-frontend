@@ -7,6 +7,9 @@ import { mainnet, goerli } from "wagmi/chains";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { infuraProvider } from "wagmi/providers/infura";
 import { publicProvider } from "wagmi/providers/public";
+import { useEffect } from "react";
+import { createOrbitDB } from "../store/orbitdb";
+import { useIpState } from "../store/store";
 
 const { chains, provider } = configureChains(
   [goerli, mainnet],
@@ -25,6 +28,18 @@ const wagmiClient = createClient({
 });
 
 export default function MyApp({ Component, pageProps }: AppProps) {
+  const setOrbitDb = useIpState((state) => state.setOrbitDb);
+
+  useEffect(() => {
+    createOrbitDB()
+      .then((res) => {
+        setOrbitDb(res);
+      })
+      .catch((e) => {
+        console.log(e.message);
+      });
+  }, []);
+
   return (
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider chains={chains}>

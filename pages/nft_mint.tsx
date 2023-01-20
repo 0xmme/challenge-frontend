@@ -26,15 +26,19 @@ export default function NftMint() {
   const topic = useIpState((state) => state.topic);
   const setTopic = useIpState((state) => state.setTopic);
   const contractCid = useIpState((state) => state.contractCid);
-  const setContractCid = useIpState((state) => state.setContractCid);
+  const setContractCidMint = useIpState((state) => state.setContractCidMint);
   const currentTokenId = useIpState((state) => state.currentTokenId);
   const setTokenId = useIpState((state) => state.setCurrentTokenId);
   const getNextTokenId = useIpState((state) => state.getNextTokenId);
+  const symmetricKey = useIpState((state) => state.symmetricKey);
+  const setSymmetricKey = useIpState((state) => state.setSymmetricKey);
+  const orbitDb = useIpState((state) => state.orbitDb);
   const contractABI = abi.abi;
   const contractAddress = abi.address;
   const { address: connectedWallet } = useAccount();
 
   const [metadataLocation, setMetadataLocation] = useState("");
+  const [nftMinted, setNftMinted] = useState(false);
 
   //retrieval of the latest tokenid
   const provider = new ethers.providers.InfuraProvider(
@@ -58,7 +62,12 @@ export default function NftMint() {
     functionName: "safeMint",
     args: [connectedWallet, metadataLocation],
     onSuccess(data) {
-      console.log("Success", data);
+      console.log("success: ", data);
+      setNftMinted(true);
+    },
+    onError(error) {
+      console.log(error);
+      alert("Error: Please make sure your address is brightlisted!");
     },
   });
 
@@ -67,7 +76,7 @@ export default function NftMint() {
     event.preventDefault();
     const form = event.target as HTMLFormElement;
     setTopic(form.cure.value);
-    setContractCid(form.legalCid.value);
+    setContractCidMint(form.legalCid?.value);
 
     //preparing metadata json for nft
     const metadata = {
@@ -80,12 +89,18 @@ export default function NftMint() {
 
     try {
       const created = await client.add(file);
-      const url = `https://infura-ipfs.io/ipfs/${created.path}`;
       setMetadataLocation(created.path);
     } catch (error: any) {
       console.log(error.message);
     }
+
     mintNft.write!();
+    const cidFromForm = form.legalCid.value;
+    orbitDb.load();
+    const value = orbitDb.get(cidFromForm);
+    setSymmetricKey(value);
+    localStorage.setItem("contractCid", contractCid);
+    localStorage.setItem("encryptedSymmetricKey", value);
   };
 
   //render
@@ -130,6 +145,16 @@ export default function NftMint() {
           </button>
         </form>
       </div>
+
+      {symmetricKey && nftMinted ? (
+        <>
+          <p>Your key for decryption is: </p>
+          <br />
+          <p className="break-all">{symmetricKey}</p>
+        </>
+      ) : (
+        "no symmetric key"
+      )}
     </div>
   );
 }

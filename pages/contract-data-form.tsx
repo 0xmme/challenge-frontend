@@ -26,6 +26,8 @@ export default function ContractDataForm() {
   //const [encryptedKeyArr, setEncryptedKeyArr] = useState([]);
   //const [decryptedFileArr, setDecryptedFileArr] = useState([]);
 
+  const orbitDb = useIpState((state) => state.orbitDb);
+  //const setOrbitDb = useIpState((state) => state.setOrbitDb);
   const ipfsUrl = useIpState((state) => state.ipfsUrl);
   const setIpfsUrl = useIpState((state) => state.setIpfsUrl);
   const contractCid = useIpState((state) => state.contractCid);
@@ -90,7 +92,12 @@ export default function ContractDataForm() {
       setContractCid(created.path);
       setEncryptionKey(encrypted.encryptedSymmetricKey);
 
+      await orbitDb.put(created.path, encrypted.encryptedSymmetricKey);
+
       console.log("Encrypted File: ", encrypted.encryptedFile);
+
+      const value = orbitDb.get(created.path);
+      console.log(created.path);
 
       //setEncryptedUrlArr((prev) => [...prev, encrypted.encryptedFile]);
       //setEncryptedKeyArr((prev) => [...prev, encrypted.encryptedSymmetricKey]);

@@ -6,6 +6,8 @@ interface IpState {
   setIpfsUrl: (newUrl: any) => void;
   contractCid: string;
   setContractCid: (newCid: any) => void;
+  contractCidMint: string;
+  setContractCidMint: (newCid: any) => void;
   encryptionKey: any;
   setEncryptionKey: (newKey: any) => void;
   topic: string;
@@ -17,6 +19,10 @@ interface IpState {
   setProvider: (newProvider: any) => void;
   signer: any;
   setSigner: (newSigner: any) => void;
+  orbitDb: any;
+  setOrbitDb: (newOrbitDb: any) => void;
+  symmetricKey: any;
+  setSymmetricKey: (newSymmetricKey: any) => void;
 }
 
 export const useIpState = create<IpState>()((set, get) => ({
@@ -24,6 +30,8 @@ export const useIpState = create<IpState>()((set, get) => ({
   setIpfsUrl: (newUrl) => set((state) => ({ ipfsUrl: newUrl })),
   contractCid: "",
   setContractCid: (newCid) => set((state) => ({ contractCid: newCid })),
+  contractCidMint: "",
+  setContractCidMint: (newCid) => set((state) => ({ contractCidMint: newCid })),
   encryptionKey: "",
   setEncryptionKey: (newEncryptionKey) =>
     set((state) => ({ encryptionKey: newEncryptionKey })),
@@ -41,4 +49,9 @@ export const useIpState = create<IpState>()((set, get) => ({
   setProvider: (newProvider) => set((state) => ({ provider: newProvider })),
   signer: {},
   setSigner: (newSigner) => set((state) => ({ signer: newSigner })),
+  orbitDb: {},
+  setOrbitDb: (newOrbitDb) => set((state) => ({ orbitDb: newOrbitDb })),
+  symmetricKey: "",
+  setSymmetricKey: (newSymmetricKey) =>
+    set((state) => ({ symmetricKey: newSymmetricKey })),
 }));
