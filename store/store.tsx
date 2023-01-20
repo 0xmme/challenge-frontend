@@ -33,7 +33,7 @@ export const useIpState = create<IpState>()((set, get) => ({
   setCurrentTokenId: (newTokenId) =>
     set((state) => ({ currentTokenId: newTokenId })),
   getNextTokenId: () => {
-    let nextToken = get().currentTokenId;
+    let nextToken: number = get().currentTokenId as unknown as number;
     nextToken++;
     return nextToken;
   },

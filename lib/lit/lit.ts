@@ -18,14 +18,14 @@ const accessControlConditionsOwner = [
 ];
 
 class Lit {
-  litNodeClient;
+  litNodeClient: any;
 
   async connect() {
     await client.connect();
     this.litNodeClient = client;
   }
 
-  async encryptString(str) {
+  async encryptString(str: string) {
     if (!this.litNodeClient) {
       await this.connect();
     }
@@ -48,7 +48,7 @@ class Lit {
     };
   }
 
-  async decryptString(encryptedStr, encryptedSymmetricKey) {
+  async decryptString(encryptedStr: string, encryptedSymmetricKey: any) {
     if (!this.litNodeClient) {
       await this.connect();
     }

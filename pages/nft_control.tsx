@@ -14,7 +14,7 @@ export default function NftControl() {
   //hook for granting and revoking rule on contract
   const writeBrightList = useContractWrite({
     mode: "recklesslyUnprepared",
-    address: contractAddress!,
+    address: contractAddress! as `0x${string}`,
     abi: contractABI,
     functionName: brightlistAction,
     args: [

@@ -1,18 +1,13 @@
-import Link from "next/link";
 import { create } from "ipfs-http-client";
-
-import { fromJSON } from "postcss";
 import { FormEvent, useState } from "react";
 import styles from "../styles/Home.module.css";
-import Header from "./header";
-import { useIpState } from "./store";
+import { useIpState } from "../store/store";
 
 import Lit from "../lib/lit/lit";
 
 const projectId = "2EMSA0X2QRbrMUc7A9AMg1ipxb0"; // <---------- your Infura Project ID
-
 const projectSecret = "87107f0b2e6dc6f4933ae65fea617b0a"; // <---------- your Infura Secret
-// (for security concerns, consider saving these values in .env files)
+// i know these are burned now ;-)
 
 const auth =
   "Basic " + Buffer.from(projectId + ":" + projectSecret).toString("base64");
@@ -105,7 +100,7 @@ export default function ContractDataForm() {
         "encryptedSymmetricKey",
         encrypted.encryptedSymmetricKey
       );
-    } catch (error) {
+    } catch (error: any) {
       console.log(error.message);
     }
   };
@@ -206,7 +201,7 @@ export default function ContractDataForm() {
         </form>
         {ipfsUrl ? (
           <div>
-            <p>Here you'll find your encrypted file:</p>
+            <p>Here you&apos;ll find your encrypted file:</p>
             {ipfsUrl}
             <p>The CID of your contract file is:</p>
             <b>{contractCid}</b>

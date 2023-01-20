@@ -3,12 +3,12 @@ import { FormEvent, useEffect, useState } from "react";
 import abi from "../lib/abi/IpNft.json";
 import { useAccount, useContractWrite } from "wagmi";
 
-import { useIpState } from "./store";
+import { useIpState } from "../store/store";
 import { ethers } from "ethers";
 
 const projectId = "2EMSA0X2QRbrMUc7A9AMg1ipxb0"; // <---------- your Infura Project ID
 const projectSecret = "87107f0b2e6dc6f4933ae65fea617b0a"; // <---------- your Infura Secret
-// (for security concerns, consider saving these values in .env files)
+// i know these are burned now ;-)
 
 const auth =
   "Basic " + Buffer.from(projectId + ":" + projectSecret).toString("base64");
@@ -53,7 +53,7 @@ export default function NftMint() {
   //hook for minting the nft
   const mintNft = useContractWrite({
     mode: "recklesslyUnprepared",
-    address: contractAddress,
+    address: contractAddress as `0x${string}`,
     abi: contractABI,
     functionName: "safeMint",
     args: [connectedWallet, metadataLocation],
@@ -82,7 +82,7 @@ export default function NftMint() {
       const created = await client.add(file);
       const url = `https://infura-ipfs.io/ipfs/${created.path}`;
       setMetadataLocation(created.path);
-    } catch (error) {
+    } catch (error: any) {
       console.log(error.message);
     }
     mintNft.write!();
