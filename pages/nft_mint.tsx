@@ -2,6 +2,7 @@ import { create } from "ipfs-http-client";
 import { FormEvent, useEffect, useState } from "react";
 import abi from "../lib/abi/IpNft.json";
 import { useAccount, useContractWrite } from "wagmi";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 
 import { useIpState } from "../store/store";
 import { ethers } from "ethers";
@@ -39,6 +40,7 @@ export default function NftMint() {
 
   const [metadataLocation, setMetadataLocation] = useState("");
   const [nftMinted, setNftMinted] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   //retrieval of the latest tokenid
   const provider = new ethers.providers.InfuraProvider(
@@ -151,6 +153,12 @@ export default function NftMint() {
           <p>Your key for decryption is: </p>
           <br />
           <p className="break-all">{symmetricKey}</p>
+          <br />
+          <CopyToClipboard text={symmetricKey} onCopy={() => setCopied(true)}>
+            <button className="rounded-md shadow-sm w-full mt-1 bg-indigo-600">
+              Copy to clipboard!
+            </button>
+          </CopyToClipboard>
         </>
       ) : (
         "no symmetric key"
