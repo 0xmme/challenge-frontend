@@ -1,6 +1,6 @@
 # coding challenge - frontend
 
-This Frontend was created as my solution to the coding challenge provided by Molecule.
+This frontend was created as my solution to the coding challenge provided by Molecule.
 Thanks to them for putting this challenge together!
 
 ## What's inside?
@@ -15,6 +15,7 @@ This frontend consists of the following tools:
 - [wagmi](https://wagmi.sh/)
 - [Lit Protocol](https://litprotocol.com/)
 - [zustand](https://zustand-demo.pmnd.rs/)
+- [orbitDB](https://github.com/orbitdb)
 
 ## How to use
 
