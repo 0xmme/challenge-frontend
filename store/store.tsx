@@ -1,6 +1,6 @@
 import { create } from "zustand";
-import { devtools, persist } from "zustand/middleware";
 
+// creating interface for zustand storage
 interface IpState {
   ipfsUrl: string;
   setIpfsUrl: (newUrl: any) => void;
@@ -25,6 +25,7 @@ interface IpState {
   setSymmetricKey: (newSymmetricKey: any) => void;
 }
 
+// initializing zustand...
 export const useIpState = create<IpState>()((set, get) => ({
   ipfsUrl: "",
   setIpfsUrl: (newUrl) => set((state) => ({ ipfsUrl: newUrl })),

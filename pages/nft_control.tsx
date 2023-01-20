@@ -40,12 +40,14 @@ export default function NftControl() {
 
     setBrightlistAddress(bladdress);
 
+    // check form and select corresponding function call for contract
     if (actionType == "Grant") {
       setBrightlistAction("grantRole");
     } else if (actionType == "Revoke") {
       setBrightlistAction("revokeRole");
     }
 
+    // sending tx...
     writeBrightList.write!();
   };
 

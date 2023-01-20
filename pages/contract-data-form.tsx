@@ -84,14 +84,18 @@ export default function ContractDataForm() {
     setTopic(form.topic.value);
 
     try {
+      // encrypt the json with Lit protocol
       const encrypted = await Lit.encryptString(file);
 
+      // upload encrypted file to ipfs
       const created = await client.add(encrypted.encryptedFile);
       const url = `https://infura-ipfs.io/ipfs/${created.path}`;
       setIpfsUrl(url);
       setContractCid(created.path);
       setEncryptionKey(encrypted.encryptedSymmetricKey);
 
+      // put key-value pair of cid and encryption key in database
+      // notice: this is unsafe and should be changed before production use!
       await orbitDb.put(created.path, encrypted.encryptedSymmetricKey);
 
       console.log("Encrypted File: ", encrypted.encryptedFile);
@@ -102,6 +106,7 @@ export default function ContractDataForm() {
       //setEncryptedUrlArr((prev) => [...prev, encrypted.encryptedFile]);
       //setEncryptedKeyArr((prev) => [...prev, encrypted.encryptedSymmetricKey]);
 
+      // put data into local storage
       localStorage.setItem("contractCid", contractCid);
       localStorage.setItem(
         "encryptedSymmetricKey",

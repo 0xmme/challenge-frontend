@@ -8,8 +8,6 @@ export async function createOrbitDB() {
 
   const ipfs = await IPFS.create(ipfsOptions);
 
-  //console.log(ipfs);
-
   // Create OrbitDB instance
   const orbitdb = await OrbitDB.createInstance(ipfs);
 
@@ -18,8 +16,8 @@ export async function createOrbitDB() {
     overwrite: false,
   });
 
+  // open OrbitDB instance
   await db.load();
 
-  //console.log(db);
   return db;
 }

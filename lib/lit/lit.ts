@@ -1,5 +1,6 @@
 import LitJsSdk from "lit-js-sdk";
 
+// initiate Lit Protocol
 const client = new LitJsSdk.LitNodeClient();
 const chain = "goerli";
 

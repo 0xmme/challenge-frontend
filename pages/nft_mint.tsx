@@ -14,6 +14,7 @@ const projectSecret = "87107f0b2e6dc6f4933ae65fea617b0a"; // <---------- your In
 const auth =
   "Basic " + Buffer.from(projectId + ":" + projectSecret).toString("base64");
 
+// create ipfs client
 const client = create({
   host: "ipfs.infura.io",
   port: 5001,
@@ -24,6 +25,7 @@ const client = create({
 });
 
 export default function NftMint() {
+  // get all states and functions from zustand
   const topic = useIpState((state) => state.topic);
   const setTopic = useIpState((state) => state.setTopic);
   const contractCid = useIpState((state) => state.contractCid);
@@ -38,6 +40,7 @@ export default function NftMint() {
   const contractAddress = abi.address;
   const { address: connectedWallet } = useAccount();
 
+  //setting some local states...
   const [metadataLocation, setMetadataLocation] = useState("");
   const [nftMinted, setNftMinted] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -63,6 +66,7 @@ export default function NftMint() {
     abi: contractABI,
     functionName: "safeMint",
     args: [connectedWallet, metadataLocation],
+    // when sucessful set this in a state...
     onSuccess(data) {
       console.log("success: ", data);
       setNftMinted(true);
@@ -89,6 +93,7 @@ export default function NftMint() {
 
     const file = JSON.stringify(metadata);
 
+    // upload metadata file to ipfs using infura
     try {
       const created = await client.add(file);
       setMetadataLocation(created.path);
@@ -96,6 +101,7 @@ export default function NftMint() {
       console.log(error.message);
     }
 
+    // calling the actual transaction hook of wagmi
     mintNft.write!();
     const cidFromForm = form.legalCid.value;
     orbitDb.load();
